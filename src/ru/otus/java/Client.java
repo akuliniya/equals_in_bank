@@ -1,7 +1,5 @@
 package ru.otus.java;
 
-import java.util.HashSet;
-
 public class Client {
     private static long idCounter = 0L;
     private final long clientId;
@@ -27,14 +25,6 @@ public class Client {
         return age;
     }
 
-//    public boolean isAgeAppropriate(int ageFrom, int ageTo){
-//        return (age >= ageFrom && age < ageTo);
-//    }
-//
-//    public boolean isAgeAppropriate(int ageFrom){
-//        return (age >= ageFrom);
-//    }
-
     @Override
     public int hashCode() {
         return name.hashCode();
@@ -50,8 +40,7 @@ public class Client {
         return this.name.equals(otherClient.name);
     }
 
-
     public static String toString(Client client) {
-        return Long.toString(client.getClientId()) + " " + client.getName().toString();
+        return client.getClientId() + " " + client.getName();
     }
 }

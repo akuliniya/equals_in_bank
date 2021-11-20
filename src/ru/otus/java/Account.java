@@ -5,7 +5,6 @@ import java.util.*;
 public class Account {
     private final long accountNumber;
     private long accountBalance;
-//    private Client client;
 
     public Account(long accountNumber, long accountBalance) {
         this.accountNumber = accountNumber;
@@ -28,10 +27,6 @@ public class Account {
         this.accountBalance = accountBalance;
     }
 
-//    public void setClient(Client client) {
-//        this.client = client;
-//    }
-
     @Override
     public int hashCode() {
         return Long.toString(accountNumber).hashCode();
@@ -47,8 +42,7 @@ public class Account {
         return Objects.equals(this.accountNumber, otherAccount.accountNumber);
     }
 
-
     public static String toString(Account account) {
-        return Long.toString(account.getAccountNumber()) + " " + Long.toString(account.getAccountBalance());
+        return account.getAccountNumber() + " " + account.getAccountBalance();
     }
 }

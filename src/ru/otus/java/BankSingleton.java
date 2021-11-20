@@ -3,9 +3,11 @@ package ru.otus.java;
 import java.util.*;
 
 public class BankSingleton implements BankRepository {
+    private HashMap<Account, Client> accountsList;
+    private HashMap<Client, HashSet<Account>> helpListForSearchClientAccounts;
+
     private static BankSingleton BANK;
     private BankSingleton(){}
-
     public static synchronized BankSingleton getBankInstance(){
         if(BANK == null){
             BANK = new BankSingleton();
@@ -13,35 +15,31 @@ public class BankSingleton implements BankRepository {
         return BANK;
     }
 
-    private HashMap<Account, Client> accountsList = new HashMap<>();
-    private HashSet<Client> clientsList;
-
     public HashMap<Account, Client> getAccountsList(){
         return accountsList;
     }
 
-    public HashSet<Client> getClientsList() {
-        return clientsList;
-    }
-
     @Override
     public void addAccount(Account account, Client client) {
-//        if (accountsList.equals(null)) {
-//            accountsList = new HashMap<Account, Client>();
-//        }
+        if (accountsList == null) {
+            accountsList = new HashMap<>();
+        }
         accountsList.put(account, client);
+        fillHelpListForSearchClientAccounts(client, account);
     }
 
-    @Override
-    public Iterable<Account> getAccounts(Client client) {
-        ArrayList<Account> clientAccountsList = new ArrayList<Account>();
-        Set<Map.Entry<Account, Client>> entries = accountsList.entrySet();
-        for (Map.Entry<Account, Client> pair : entries){
-            if (client.equals(pair.getValue())){
-                clientAccountsList.add(pair.getKey());
-            }
+    private void fillHelpListForSearchClientAccounts(Client client, Account account) {
+        if (helpListForSearchClientAccounts == null) {
+            helpListForSearchClientAccounts = new HashMap<>();
         }
-        return clientAccountsList;
+
+       if (helpListForSearchClientAccounts.containsKey(client)) {
+           helpListForSearchClientAccounts.get(client).add(account);
+       }else{
+           HashSet<Account> clientAccounts = new HashSet<>();
+           clientAccounts.add(account);
+           helpListForSearchClientAccounts.put(client, clientAccounts);
+        }
     }
 
     @Override
@@ -50,26 +48,23 @@ public class BankSingleton implements BankRepository {
     }
 
     @Override
-    public void addClient(Client client) {
-        if (clientsList.equals(null)) {
-            clientsList = new HashSet<Client>();
-        }
-        clientsList.add(client);
-    }
-
-    @Override
     public Client findClient(Account account) {
         return accountsList.get(account);
     }
 
     @Override
-    public void deleteClient(Client client) {
-        clientsList.remove(client);
-        TreeSet<Map.Entry<Account, Client>> entrySet = (TreeSet<Map.Entry<Account, Client>>) accountsList.entrySet();
-        for (Map.Entry<Account, Client> pair : entrySet){
-            if (client.equals(pair.getValue())){
-                accountsList.remove(pair.getKey());
-            }
-        }
+    public Iterable<Account> getAccounts(Client client) {
+        return helpListForSearchClientAccounts.get(client);
     }
+
+//    public Iterable<Account> getAccounts(Client client) {
+//        ArrayList<Account> clientAccountsList = new ArrayList<Account>();
+//        Set<Map.Entry<Account, Client>> entries = accountsList.entrySet();
+//        for (Map.Entry<Account, Client> pair : entries){
+//            if (client.equals(pair.getValue())){
+//                clientAccountsList.add(pair.getKey());
+//            }
+//        }
+//        return clientAccountsList;
+//    }
 }
