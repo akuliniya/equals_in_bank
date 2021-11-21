@@ -27,7 +27,7 @@ public class Client {
 
     @Override
     public int hashCode() {
-        return name.hashCode();
+        return Long.toString(clientId).hashCode();
     }
 
     @Override
@@ -37,10 +37,18 @@ public class Client {
         if (getClass() != other.getClass()) return false;
 
         Client otherClient = (Client) other;
-        return this.name.equals(otherClient.name);
+        return this.clientId == otherClient.clientId;
     }
 
+    // Какой вариант toString() правильнее: в Account или в Client?
     public static String toString(Client client) {
-        return client.getClientId() + " " + client.getName();
+        String sClient = null;
+        try {
+            sClient = client.getClientId() + " " + client.getName();
+        }catch(NullPointerException e) {
+            sClient = "Client null";
+        }finally {
+            return sClient;
+        }
     }
 }

@@ -2,6 +2,7 @@ package ru.otus.java;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 
 public class BankProcessing {
@@ -19,10 +20,10 @@ public class BankProcessing {
         Account account4 = new Account(5555555555555L, 25000);
 
         //Добавляем их в список счетов
-        bank.addAccount(account1, masha);
-        bank.addAccount(account2, dima);
+//        bank.addAccount(account1, masha);
+//        bank.addAccount(account2, dima);
         bank.addAccount(account3, masha);
-        bank.addAccount(account4, dima);
+//        bank.addAccount(account4, dima);
 
         //Получить и вывести на печать заполненный список счетов и клиентов
         HashMap<Account, Client> accountCsList = bank.getAccountsList();
@@ -37,16 +38,20 @@ public class BankProcessing {
 
         System.out.println("Счета найденные по клиенту 2: " + Client.toString(dima));
         Iterable<Account> testClientAccounts2 = bank.getAccounts(dima);
-        for (Account a : testClientAccounts2) {
-            System.out.println(Account.toString(a));
-        }
+//        for (Account a : testClientAccounts2) {
+//            System.out.println(Account.toString(a));
+//        }
 
         //Ищем клиента по счету и выводим не печать
         System.out.println("Клиенты, найденные по номеру счета");
         System.out.println(Account.toString(account1) + " " + Client.toString(bank.findClient(account1)));
+        Client findedClient = bank.findClient(account2);
+        Optional<Client> findedClient2 = bank.findClientByAccount(account2);
         System.out.println(Account.toString(account2) + " " + Client.toString(bank.findClient(account2)));
         System.out.println(Account.toString(account3) + " " + Client.toString(bank.findClient(account3)));
         System.out.println(Account.toString(account4) + " " + Client.toString(bank.findClient(account4)));
+
+        System.out.println();
 
     }
 

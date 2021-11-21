@@ -42,7 +42,8 @@ public class Account {
         return Objects.equals(this.accountNumber, otherAccount.accountNumber);
     }
 
-    public static String toString(Account account) {
+    // Какой вариант toString() правильнее: в Account или в Client?
+    public static String toString(Account account) throws NullPointerException {
         return account.getAccountNumber() + " " + account.getAccountBalance();
     }
 }
